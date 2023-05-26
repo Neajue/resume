@@ -2,13 +2,15 @@ import { defineStore } from 'pinia'
 
 const userStore = defineStore('user', {
   state: () => ({
-    id: 2222
+    name: '',
   }),
   getters: {
 
   },
   actions: {
-
+    updateName(newName: string) {
+      this.name = newName;
+    }
   }
 })
 

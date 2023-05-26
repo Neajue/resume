@@ -181,6 +181,7 @@
 5. 创建并切换到 dev 分支
   ```bash
   git branch -c dev
+  git switch dev
   ```
 
 ## 后端

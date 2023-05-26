@@ -3,12 +3,9 @@
 </script>
 
 <template>
-  <div>
-    <div class="text-4xl">
-      测试tailwind
-    </div>
+  <transition>
     <router-view></router-view>
-  </div>
+  </transition>
 </template>
 
 <style scoped>
