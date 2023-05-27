@@ -3,9 +3,7 @@
 </script>
 
 <template>
-  <transition>
-    <router-view></router-view>
-  </transition>
+  <router-view></router-view>
 </template>
 
 <style scoped>

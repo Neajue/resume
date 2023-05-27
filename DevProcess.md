@@ -5,9 +5,9 @@
 
 ## 前端
 
-### 环境搭建
-
 技术选型：HTML5 + sass + TypeScript + Vue3 + vue-router + vite + pinia + axios + element-plus + tailwindcss
+
+### 环境搭建
 
 1. 先创建好远程仓库https://github.com/Neajue/resume.git，然后关联远程仓库。
   ```bash
@@ -168,16 +168,16 @@
     console.log(useUserStore)
     ```
   - 配置 axios
-  创建 utils/api 文件夹，在文件夹中创建 axios.ts（请求配置文件），并对其进行配置
-  创建 utils/types/index.d.ts，在其中声明 `declare module 'qs'`
-  创建 .env.development 和 .env.production 来配置 url 环境
-  ```js
-  // 封装接口（在axios.ts同级目录下）
-  import axios from './axios'
-  export const 方法名: any = (data: any) => {
-    return axios.post('url', data);
-  }
-  ```
+    创建 utils/api 文件夹，在文件夹中创建 axios.ts（请求配置文件），并对其进行配置
+    创建 utils/types/index.d.ts，在其中声明 `declare module 'qs'`
+    创建 .env.development 和 .env.production 来配置 url 环境
+    ```js
+    // 封装接口（在axios.ts同级目录下）
+    import axios from './axios'
+    export const 方法名: any = (data: any) => {
+      return axios.post('url', data);
+    }
+    ```
 5. 创建并切换到 dev 分支
   ```bash
   git branch -c dev
@@ -185,3 +185,15 @@
   ```
 
 ## 后端
+
+技术选型：nodejs + express + mySQL
+
+### 环境搭建
+
+```bash
+cd server
+npm init
+npm install mysql express --save
+npm install cors --save
+npm install body-parser --save
+```

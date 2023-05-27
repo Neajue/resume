@@ -17,7 +17,8 @@ interface ResultData<T = any> extends Result {
   Data?: T;
 }
 
-const URL: string = import.meta.env.VITE_APP_API;
+// const URL: string = import.meta.env.VITE_APP_API;
+const URL: string = 'http://localhost:3001/api';
 enum RequestEnums {
   TIMEOUT = 20000,
   OVERDUE = 600, // 登录失效
@@ -29,8 +30,8 @@ const config = {
   baseURL: URL as string,
   // 设置超时时间
   timeout: RequestEnums.TIMEOUT as number,
-  // 跨域时候允许携带凭证
-  withCredentials: true,
+  // 跨域时候不允许携带凭证，否则报错
+  withCredentials: false,
 };
 
 class RequestHttp {
@@ -106,10 +107,10 @@ class RequestHttp {
     return this.instance.get(url, { params });
   }
   post<T>(url: string, params?: object): Promise<ResultData<T>> {
-    return this.instance.post(url, params);
+    return this.instance.post(url, { params });
   }
   put<T>(url: string, params?: object): Promise<ResultData<T>> {
-    return this.instance.put(url, params);
+    return this.instance.put(url, { params });
   }
   delete<T>(url: string, params?: object): Promise<ResultData<T>> {
     return this.instance.delete(url, { params });

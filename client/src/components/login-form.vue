@@ -31,6 +31,8 @@ import { reactive, ref } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus';
 
+import { loginApi } from '@/utils/api/login';
+
 const ruleFormRef = ref<FormInstance>()
 
 const ruleForm = reactive({
@@ -74,22 +76,19 @@ const submitForm = (formEl: FormInstance | undefined) => {
   })
 }
 
-const login = () => {
-  const userName = ruleForm.name;
-  const userPassword = ruleForm.pass;
-  const userData = { userName, userPassword };
-  // TODO: 发起网络请求登录(userData)
-  // if成功
-  useUserStore.updateName(userName);
-  ElMessage({
-    type: 'success',
-    message: '登录成功!',
+const login = async () => {
+  const accountName = ruleForm.name;
+  const password = ruleForm.pass;
+  const userData = { accountName, password };
+  await loginApi(userData).then((res: any) => {
+    if(res) {
+      useUserStore.updateName(accountName);
+      router.push('/resume');
+      ElMessage({
+        type: 'success',
+        message: '登录成功!',
+      });
+    }
   });
-  router.push('/resume');
-  // else
-  // ElMessage({
-  //   type: 'success',
-  //   message: '用户名或密码错误!',
-  // });
 }
 </script>

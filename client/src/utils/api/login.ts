@@ -1,5 +1,5 @@
 import axios from './axios'
 
-export const login: any = (data: any) => {
-  return axios.post('v1/resume/login', data);
+export const loginApi: any = (data: any) => {
+  return axios.post(`/login?accountName=${data.accountName}&password=${data.password}`, {});
 }
