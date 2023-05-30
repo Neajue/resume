@@ -35,9 +35,11 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, defineEmits } from 'vue'
+import { reactive, ref } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus';
+import { registerApi } from '@/utils/api/login';
+import debounce from 'lodash/debounce';
 
 const emit = defineEmits(['register']);
 const ruleFormRef = ref<FormInstance>()
@@ -87,7 +89,7 @@ const rules = reactive<FormRules>({
   checkPass: [{ validator: validatePass2, trigger: 'blur' }],
 })
 
-const submitForm = (formEl: FormInstance | undefined) => {
+const submitForm = debounce((formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.validate((valid) => {
     if (valid) {
@@ -100,23 +102,29 @@ const submitForm = (formEl: FormInstance | undefined) => {
       return false;
     }
   })
-}
+}, 500)
 
-const register = () => {
-  const userName = ruleForm.name;
-  const userPassword = ruleForm.pass;
-  const userData = { userName, userPassword };
-  // TODO: 发起网络请求登录(userData)
-  // if成功
-  ElMessage({
-    type: 'success',
-    message: '注册成功!',
+const register = async () => {
+  const accountName = ruleForm.name;
+  const password = ruleForm.pass;
+  const userId = Date.now() + Math.round(Math.random() * 100);
+  const userData = { accountName, password, userId };
+  await registerApi(userData).then((res: any) => {
+    console.log(res);
+    if(res) {
+      if(res.Code == 200) {
+        ElMessage({
+          type: 'success',
+          message: '注册成功，请登录',
+        });
+        emit('register'); // 告诉父组件已经注册了，跳转到登录
+      } else {
+        ElMessage({
+          type: 'error',
+          message: res.Message,
+        });
+      }
+    }
   });
-  emit('register');
-  // else
-  // ElMessage({
-  //   type: 'error',
-  //   message: '注册失败!',
-  // });
 }
 </script>

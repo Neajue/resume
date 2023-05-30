@@ -13,6 +13,7 @@
     "noEmit": true,
     "jsx": "preserve",
     "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true, 
 
     /* Linting */
     "strict": true,

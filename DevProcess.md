@@ -61,6 +61,7 @@
   npm i unplugin-auto-import -D
   npm i vite-plugin-vue-setup-extend -D
   npm add -D sass 
+  npm i --save lodash
   ```
   - 配置 tailwindcss
     ```

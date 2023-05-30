@@ -22,16 +22,16 @@
 </template>
 
 <script lang="ts" setup>
-import router from '@/router';
 import pinia from '@/store'
 import userStore from '@/store/user'
-const useUserStore = userStore(pinia);
-
+import { useRouter } from "vue-router";
 import { reactive, ref } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus';
-
 import { loginApi } from '@/utils/api/login';
+
+const router = useRouter ();
+const useUserStore = userStore(pinia);
 
 const ruleFormRef = ref<FormInstance>()
 
@@ -81,13 +81,22 @@ const login = async () => {
   const password = ruleForm.pass;
   const userData = { accountName, password };
   await loginApi(userData).then((res: any) => {
+    console.log(res);
     if(res) {
-      useUserStore.updateName(accountName);
-      router.push('/resume');
-      ElMessage({
-        type: 'success',
-        message: '登录成功!',
-      });
+      if(res.Code == 200) {
+        // useUserStore.updateName(accountName);
+        const userId = res.Data.userId;
+        ElMessage({
+          type: 'success',
+          message: '登录成功!',
+        });
+        router.push('/resume');
+      } else {
+        ElMessage({
+          type: 'error',
+          message: res.Message,
+        });
+      }
     }
   });
 }
