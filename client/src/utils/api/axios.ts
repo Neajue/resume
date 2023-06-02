@@ -48,12 +48,15 @@ class RequestHttp {
 
     this.instance.interceptors.request.use(
       (config: any) => {
-        const token = localStorage.getItem("token") || "";
+        // const token = localStorage.getItem("token") || "";
         return {
           ...config,
           // headers: {
           //   "x-access-token": token, // 请求头中携带token信息
           // },
+          headers: {
+            "Content-Type":"application/json"
+          },
         };
       },
       (error: AxiosError) => {

@@ -28,7 +28,7 @@
         />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" color="#3c33a6" round class="w-full mx-auto" @click="submitForm(ruleFormRef)">注 册</el-button>
+        <el-button type="primary" :color="mainColor" round class="w-full mx-auto" @click="submitForm(ruleFormRef)">注 册</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -40,6 +40,7 @@ import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus';
 import { registerApi } from '@/utils/api/login';
 import debounce from 'lodash/debounce';
+import { mainColor } from '@/utils/static';
 
 const emit = defineEmits(['register']);
 const ruleFormRef = ref<FormInstance>()
@@ -106,7 +107,7 @@ const submitForm = debounce((formEl: FormInstance | undefined) => {
 
 const register = async () => {
   const accountName = ruleForm.name;
-  const password = ruleForm.pass;
+  const password = window.btoa(ruleForm.pass);  // base64编码，用于简单的加密
   const userId = Date.now() + Math.round(Math.random() * 100);
   const userData = { accountName, password, userId };
   await registerApi(userData).then((res: any) => {

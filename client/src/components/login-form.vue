@@ -15,7 +15,7 @@
         <el-input v-model="ruleForm.pass" type="password" autocomplete="off" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" color="#3c33a6" round class="w-full mx-auto" @click="submitForm(ruleFormRef)">登 录</el-button>
+        <el-button type="primary" :color="mainColor" round class="w-full mx-auto" @click="submitForm(ruleFormRef)">登 录</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -29,6 +29,7 @@ import { reactive, ref } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus';
 import { loginApi } from '@/utils/api/login';
+import { mainColor } from '@/utils/static';
 
 const router = useRouter ();
 const useUserStore = userStore(pinia);
@@ -78,14 +79,14 @@ const submitForm = (formEl: FormInstance | undefined) => {
 
 const login = async () => {
   const accountName = ruleForm.name;
-  const password = ruleForm.pass;
+  const password = window.btoa(ruleForm.pass);  // base64编码，用于简单的加密
   const userData = { accountName, password };
   await loginApi(userData).then((res: any) => {
     console.log(res);
     if(res) {
       if(res.Code == 200) {
-        // useUserStore.updateName(accountName);
-        const userId = res.Data.userId;
+        useUserStore.updateAccountName(res.Data.accountName);
+        useUserStore.setUserId(res.Data.userId);
         ElMessage({
           type: 'success',
           message: '登录成功!',

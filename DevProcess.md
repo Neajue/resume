@@ -179,6 +179,19 @@
       return axios.post('url', data);
     }
     ```
+  - 配置 scss 全局变量
+    在 assets/css 文件夹中创建 globalVar.scss 文件 
+    ```js
+    // vite.config.ts
+    css: {
+      preprocessorOptions: {
+        // 引入 scss 全局变量
+        scss: {
+          prependData: "@use '@assets/css/globalVar.scss' as *;"
+        }
+      }
+    }
+    ```
 5. 创建并切换到 dev 分支
   ```bash
   git branch -c dev

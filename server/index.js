@@ -53,14 +53,25 @@ const selectUser = (tableName, key, type) => {
   })
 }
 
+//字符串 Base64 编码函数
+const Base64encode = (str) => {
+  return Buffer.from(str).toString('base64');
+}
+
+//字符串 Base64 解码函数
+const Base64decode = (str) => {
+  return Buffer.from(str, 'base64').toString('ascii');
+}
+
 // 登录
 // http://localhost:3001/api/login
 app.post("/api/login", async (req, res) => {
-  const { accountName, password } = req.query;
+  const { accountName, password } = req.body.params;
+  const passBtoa = Base64decode(password);  // 对传输的密码进行 base64 解码
   let result = await selectUser('account_info', accountName, 'accountName');
   if (result != 'error') {
     if (result.length > 0) {
-      if (result[0].password == password) {
+      if (result[0].password == passBtoa) {
         res.send({
           Code: 200,
           Message: '登陆成功',
@@ -96,8 +107,8 @@ app.post("/api/login", async (req, res) => {
 // 注册
 // http://localhost:3001/api/register
 app.post("/api/register", async (req, res) => {
-  console.log(req.query);
-  const { accountName, password, userId } = req.query;
+  const { accountName, password, userId } = req.body.params;
+  const passBtoa = Base64decode(password);  // 对传输的密码进行 base64 解码
   const userList = await selectUser('account_info', accountName, 'accountName');
   if (userList != 'error') {
     if (userList.length > 0) {
@@ -107,7 +118,7 @@ app.post("/api/register", async (req, res) => {
         Data: null,
       })
     } else {
-      const sql = `insert into account_info (accountName, password, userId) values ('${accountName}', '${password}', ${userId})`;
+      const sql = `insert into account_info (accountName, password, userId) values ('${accountName}', '${passBtoa}', ${userId})`;
       console.log(sql);
       db.query(sql, (err, result) => {
         if (err) {
