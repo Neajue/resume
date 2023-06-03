@@ -4,6 +4,7 @@ const mysql = require("mysql");
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const mysqlConfig = require('./mysql.config');
+const { encode, decode } = require('./secret/aes')
 
 app.use(bodyParser.json());  //配置解析，用于解析json和urlencoded格式的数据
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -53,21 +54,11 @@ const selectUser = (tableName, key, type) => {
   })
 }
 
-//字符串 Base64 编码函数
-const Base64encode = (str) => {
-  return Buffer.from(str).toString('base64');
-}
-
-//字符串 Base64 解码函数
-const Base64decode = (str) => {
-  return Buffer.from(str, 'base64').toString('ascii');
-}
-
 // 登录
 // http://localhost:3001/api/login
 app.post("/api/login", async (req, res) => {
   const { accountName, password } = req.body.params;
-  const passBtoa = Base64decode(password);  // 对传输的密码进行 base64 解码
+  const passBtoa = decode(password);  // 对传输的密码进行 aes 解码
   let result = await selectUser('account_info', accountName, 'accountName');
   if (result != 'error') {
     if (result.length > 0) {
@@ -108,7 +99,7 @@ app.post("/api/login", async (req, res) => {
 // http://localhost:3001/api/register
 app.post("/api/register", async (req, res) => {
   const { accountName, password, userId } = req.body.params;
-  const passBtoa = Base64decode(password);  // 对传输的密码进行 base64 解码
+  const passBtoa = decode(password);  // 对传输的密码进行 base64 解码
   const userList = await selectUser('account_info', accountName, 'accountName');
   if (userList != 'error') {
     if (userList.length > 0) {

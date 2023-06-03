@@ -30,6 +30,7 @@ import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus';
 import { loginApi } from '@/utils/api/login';
 import { mainColor } from '@/utils/static';
+import { Encrypt, Decrypt } from '@/utils/secret/aes';
 
 const router = useRouter ();
 const useUserStore = userStore(pinia);
@@ -79,7 +80,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
 
 const login = async () => {
   const accountName = ruleForm.name;
-  const password = window.btoa(ruleForm.pass);  // base64编码，用于简单的加密
+  const password = Encrypt(ruleForm.pass); // aes对称加密
   const userData = { accountName, password };
   await loginApi(userData).then((res: any) => {
     console.log(res);

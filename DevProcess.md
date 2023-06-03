@@ -211,3 +211,22 @@ npm install mysql express --save
 npm install cors --save
 npm install body-parser --save
 ```
+
+## AES对称加密技术
+
+使用 crypto 插件实现
+
+### 前端
+```bash
+npm i crypto-js --save-dev
+npm i --save-dev @types/crypto-js
+```
+在 utils/secret 文件夹中新建 aes.ts 和 key.ts 文件，前者用于编写加密和解密的方法，后者用于存储密钥。
+
+
+### 后端
+```js
+const crypto = require('crypto'); // node自带的密码相关的模块
+```
+在 server/secret 文件夹中新建 aes.js 和 key.js 文件，前者用于编写加密和解密的方法，后者用于存储密钥。
+== ❗注意❗：因为使用的对称加密，所以**前后端的密钥必须一致！** ==

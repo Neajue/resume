@@ -12,6 +12,8 @@ dist
 dist-ssr
 *.local
 
+# 数据安全
+key.ts
 
 # Editor directories and files
 .vscode/*

@@ -41,6 +41,7 @@ import { ElMessage } from 'element-plus';
 import { registerApi } from '@/utils/api/login';
 import debounce from 'lodash/debounce';
 import { mainColor } from '@/utils/static';
+import { Encrypt, Decrypt } from '@/utils/secret/aes';
 
 const emit = defineEmits(['register']);
 const ruleFormRef = ref<FormInstance>()
@@ -107,7 +108,7 @@ const submitForm = debounce((formEl: FormInstance | undefined) => {
 
 const register = async () => {
   const accountName = ruleForm.name;
-  const password = window.btoa(ruleForm.pass);  // base64编码，用于简单的加密
+  const password = Encrypt(ruleForm.pass); // aes对称加密
   const userId = Date.now() + Math.round(Math.random() * 100);
   const userData = { accountName, password, userId };
   await registerApi(userData).then((res: any) => {

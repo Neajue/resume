@@ -11,7 +11,10 @@ node_modules
 dist
 dist-ssr
 *.local
+
+# 数据安全
 mysql.config.js
+key.js
 
 
 # Editor directories and files
